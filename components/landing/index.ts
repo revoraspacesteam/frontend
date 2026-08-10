@@ -1,0 +1,17 @@
+export { Hero } from "./Hero";
+export { TrustedPartner } from "./TrustedPartner";
+export { StructuredWorkflow } from "./StructuredWorkflow";
+export { RevoraDifference } from "./RevoraDifference";
+export { Comparison } from "./Comparison";
+export { TailoredSectors } from "./TailoredSectors";
+export { CommunityImpact } from "./CommunityImpact";
+export { CorePhilosophy } from "./CorePhilosophy";
+export { Testimonials } from "./Testimonials";
+export { OurStory } from "./OurStory";
+export { MissionVision } from "./MissionVision";
+export { Pricing } from "./Pricing";
+export { PricingPromise } from "./PricingPromise";
+export { ProjectEstimator } from "./ProjectEstimator";
+export { FAQ } from "./FAQ";
+export { Contact } from "./Contact";
+export { FinalCTA } from "./FinalCTA";
