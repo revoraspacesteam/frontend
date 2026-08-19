@@ -10,6 +10,7 @@ export default function LandingLayout({
   return (
     <LanguageProvider>
       <Header />
+      
       <main className="flex-1">{children}</main>
       <Footer />
     </LanguageProvider>
