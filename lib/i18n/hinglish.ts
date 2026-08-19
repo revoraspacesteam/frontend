@@ -27,8 +27,8 @@ export const hinglish: Dictionary = {
   },
   hero: {
     badge: "Homes, Offices aur Commercial Spaces ke liye ek Trusted Partner",
-    heading1: "Chhoti Repairs se leke Complete",
-    heading2: "Spaces tak. Hum Handle Karte Hain Sab",
+    heading1: "Architecture. Construction. Renovation. Sab Kuch Ek Hi Chhat Ke Neeche.",
+    heading2: "",
     body: "REVORA SPACES architecture, construction, renovation, maintenance, skilled professionals, materials aur complete project coordination ek clear aur dependable process se deta hai.",
     repair: "Repairing & Maintenance",
     project: "Apna Project Start Karein",

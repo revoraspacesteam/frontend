@@ -26,8 +26,8 @@ export const en = {
   },
   hero: {
     badge: "One Trusted Partner for Homes, Offices & Commercial Spaces",
-    heading1: "From Small Repairs to Complete",
-    heading2: "Spaces. We Handle It All",
+    heading1: "Architecture. Construction. Renovation. Everything Under One Roof.",
+    heading2: "",
     body: "REVORA SPACES provides architecture, construction, renovation, maintenance, skilled professionals, materials, and complete project coordination through one clear and dependable process.",
     repair: "Repairing & Maintenance",
     project: "Start Your Project",
