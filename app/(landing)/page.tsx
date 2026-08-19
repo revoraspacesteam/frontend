@@ -17,6 +17,7 @@ import {
   Testimonials,
   TrustedPartner,
 } from "@/components/landing";
+import Revdifference from "@/components/landing/revdifference";
 
 export default function LandingPage() {
   return (
@@ -24,15 +25,14 @@ export default function LandingPage() {
       <Hero />
       <TrustedPartner />
       <StructuredWorkflow />
-      <RevoraDifference />
+      {/* <RevoraDifference /> */}
+      <Revdifference />
       <Comparison />
-      <TailoredSectors />
-      <CommunityImpact />
-      <CorePhilosophy />
-      <Testimonials />
+      {/* <TailoredSectors /> */}
+      {/* <CommunityImpact /> */}
       <OurStory />
       <MissionVision />
-      <Pricing />
+      {/* <Pricing /> */}
       <PricingPromise />
       <ProjectEstimator />
       <FAQ />

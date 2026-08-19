@@ -1,35 +1,34 @@
+"use client";
+
 import { Badge } from "@/components/ui/Badge";
-import { SectionShell } from "@/components/ui/SectionShell";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 export function OurStory() {
+  const { t } = useLanguage();
+
   return (
-    <SectionShell tone="brick" id="about">
-      <div className="mx-auto max-w-3xl">
-        <Badge>Our Story & Values</Badge>
-        <h2 className="font-display mt-4 text-3xl text-gold sm:text-4xl">
-          We Make Property Projects Easier to Manage
+    <div className="flex h-full w-full items-center justify-center overflow-x-clip bg-[#F6F1EB] py-8 sm:py-10">
+      <div className="w-full px-4 sm:max-w-[90%] sm:px-0">
+        <Badge className="max-w-full">{t.story.badge}</Badge>
+        <h2 className="font-display mt-4 text-3xl text-[#D1973F] sm:text-4xl">
+          {t.story.heading}
         </h2>
         <p className="mt-5 text-sm leading-relaxed text-muted sm:text-base">
-          REVORA SPACES was built for property owners who are tired of fragmented
-          vendors, unclear pricing, and endless follow-ups. We bring architecture,
-          construction, renovation, repairs, materials, and skilled trades into
-          one coordinated operating system.
+          {t.story.intro}
         </p>
 
         <div className="mt-8">
-          <Badge>Replacing Friction with Organization</Badge>
+          <span className="inline-block max-w-full bg-[#FFDBA3] px-3 py-2 font-display text-sm font-medium sm:px-4">
+            {t.story.highlight}
+          </span>
           <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
-            Traditional property work forces clients to become project managers —
-            sourcing people, comparing quotes, chasing updates, and absorbing
-            delays. That friction costs time, money, and peace of mind.
+            {t.story.p1}
           </p>
           <p className="mt-4 text-sm leading-relaxed text-muted sm:text-base">
-            Our model replaces that chaos with a single accountable partner,
-            milestone planning, transparent estimates, and daily visibility —
-            so your space moves forward without becoming your full-time job.
+            {t.story.p2}
           </p>
         </div>
       </div>
-    </SectionShell>
+    </div>
   );
 }

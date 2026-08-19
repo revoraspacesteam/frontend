@@ -1,144 +1,172 @@
 "use client";
 
 import { useState } from "react";
-import { Badge } from "@/components/ui/Badge";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { HighlightLabel } from "@/components/ui/HighlightLabel";
 import { LuSend } from "react-icons/lu";
 
-const highlights = [
-  { title: "Transparent pricing", text: "Upfront milestone estimates" },
-  { title: "Clear Deadlines", text: "Committed completion schedules" },
-  { title: "Regular Updates", text: "Daily photo & milestone reports" },
-  { title: "Verified Professionals", text: "Vetted skilled trades people" },
-];
+const CORE_COLS = 11;
+const CORE_ROWS = 10;
+const SIDE_COLS = 10;
+const EXTRA_ROWS = 10;
+const COLS = CORE_COLS + SIDE_COLS * 2;
+const ROWS = CORE_ROWS + EXTRA_ROWS * 2;
+const HIGHLIGHT_COL = SIDE_COLS + 9;
+const HIGHLIGHT_START_ROW = EXTRA_ROWS + 2;
 
 const fieldClass =
-  "h-12 w-full  border border-[#F6E0BE] bg-[#FBF8F4] px-4 text-sm text-ink outline-none transition placeholder:text-[#8A8A8A] focus:border-[#D5B27F] focus:bg-white";
+  "h-12 w-full min-w-0 border border-[#F6E0BE] bg-[#FBF8F4] px-4 text-sm text-ink outline-none transition placeholder:text-[#8A8A8A] focus:border-[#D5B27F] focus:bg-white";
+
+function BrickWall({
+  items,
+}: {
+  items: { title: string; text: string }[];
+}) {
+  return (
+    <section  id="book" className="flex h-full items-center justify-center">
+      {Array.from({ length: COLS }, (_, col) => (
+        <div key={col} className={col === 0 ? undefined : "-ml-[0.5px]"}>
+          {Array.from({ length: ROWS }, (_, row) => {
+            const highlightIndex =
+              col === HIGHLIGHT_COL &&
+              row >= HIGHLIGHT_START_ROW &&
+              row < HIGHLIGHT_START_ROW + items.length
+                ? row - HIGHLIGHT_START_ROW
+                : -1;
+            const item = highlightIndex >= 0 ? items[highlightIndex] : null;
+
+            return (
+              <div
+                key={row}
+                className={`h-[80px] w-[160px] shrink-0 border border-[#F6E0BE] ${
+                  row > 0 ? "-mt-[0.5px]" : ""
+                } ${row % 2 === 1 ? "-ml-[70px]" : ""} ${
+                  item ? "border-l-[2px] border-b-[6px] p-2" : ""
+                }`}
+              >
+                {item ? (
+                  <div className="hidden xl:block">
+                    <div className="text-[14px] font-bold">{item.title}</div>
+                    <div className="text-[12px]">{item.text}</div>
+                  </div>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </section>
+  );
+}
 
 export function Hero() {
+  const { t } = useLanguage();
   const [mode, setMode] = useState<"repair" | "project">("project");
 
   return (
-    <section className="relative mt-10 overflow-hidden bg-transparent">
-      <div className="mx-auto max-w-6xl px-5 pt-8 pb-16 sm:px-8 sm:pt-12 sm:pb-20 lg:px-10 lg:pb-24">
-        <div className="relative mx-auto max-w-3xl text-center">
-          <div className="animate-fade-up mb-6 flex justify-center">
-            <Badge>One Trusted Partner for Homes, Offices & Commercial Spaces</Badge>
+    <div className="relative isolate min-h-dvh overflow-x-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden
+      >
+        <BrickWall items={t.hero.highlights} />
+      </div>
+
+      <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-8 sm:px-5 sm:py-12 lg:py-16">
+        <div className="w-full max-w-3xl text-center">
+          <HighlightLabel className="max-w-full">
+            {t.hero.badge}
+          </HighlightLabel>
+          <div className="font-display mt-5 text-[18px] leading-tight text-[#D1973F] sm:text-[30px] lg:text-[35px]">
+            {t.hero.heading1}
+            <br /> {t.hero.heading2}
           </div>
-
-          <h1 className="animate-fade-up delay-1 font-display text-2xl leading-[1.5] text-gold sm:text-5xl lg:text-4xl">
-            From Small Repairs to Complete
-            <br className="hidden sm:block" /> Spaces. We Handle It All
-          </h1>
-
-          <p className="animate-fade-up delay-2  mx-auto mt-10 max-w-2xl text-sm text-[#6D6D6D] leading-relaxed  sm:text-base">
-            REVORA SPACES provides architecture, construction, renovation,
-            maintenance, skilled professionals, materials, and complete project
-            coordination through one clear and dependable process.
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-ink sm:text-base">
+            {t.hero.body}
           </p>
-        </div>
-
-        {/* Floating feature chips — desktop */}
-        <div className="pointer-events-none absolute top-28 right-6 hidden w-56 flex-col gap-3 xl:flex">
-          {highlights.map((item, i) => (
-            <div
-              key={item.title}
-              className={`animate-float border border-[#F6E0BE] bg-white/95 px-4 py-3 shadow-[0_8px_24px_rgba(28,28,28,0.05)] ${
-                i % 2 === 0 ? "translate-x-2" : "-translate-x-1"
-              }`}
-              style={{ animationDelay: `${i * 0.4}s` }}
-            >
-              <p className="text-xs font-semibold text-ink">{item.title}</p>
-              <p className="mt-0.5 text-[11px] text-muted">{item.text}</p>
+          <form
+            className="animate-fade-up delay-3 mx-auto mt-2 w-full max-w-[640px] p-5 shadow-[0_18px_50px_rgba(40,30,20,0.08)] sm:p-7"
+            onSubmit={(e) => e.preventDefault()}
+          >
+            <div className="grid grid-cols-1 gap-2.5 bg-white p-2 px-4 font-body sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setMode("repair")}
+                className={`h-12 px-2 text-sm font-medium transition ${
+                  mode === "repair"
+                    ? "bg-[#1C1C1C] text-white"
+                    : " text-[#1C1C1C]"
+                }`}
+              >
+                {t.hero.repair}
+              </button>
+              <button
+                type="button"
+                onClick={() => setMode("project")}
+                className={`h-12 px-2 text-sm font-medium transition ${
+                  mode === "project"
+                    ? "bg-[#1C1C1C] text-white"
+                    : " text-[#1C1C1C]"
+                }`}
+              >
+                {t.hero.project}
+              </button>
             </div>
-          ))}
-        </div>
 
-        {/* Enquiry form */}
-        <form
-          className="animate-fade-up delay-3 mx-auto mt-12 w-full max-w-[640px] p-5 shadow-[0_18px_50px_rgba(40,30,20,0.08)] sm:p-7"
-          onSubmit={(e) => e.preventDefault()}
-        >
-          <div className="grid grid-cols-1 bg-white p-2 px-4 font-body gap-2.5 sm:grid-cols-2">
-            <button
-              type="button"
-              onClick={() => setMode("repair")}
-              className={`h-12 text-sm font-medium  transition ${
-                mode === "repair"
-                  ? "bg-[#1C1C1C] text-white"
-                  : " text-[#1C1C1C]"
-              }`}
-            >
-              Repairing & Maintenance
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("project")}
-              className={`h-12  text-sm font-medium transition ${
-                mode === "project"
-                  ? "bg-[#1C1C1C] text-white"
-                  : " text-[#1C1C1C]"
-              }`}
-            >
-              Start Your Project
-            </button>
-          </div>
-
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <input
-              name="fullName"
-              placeholder="Full Name"
-              className={fieldClass}
-              autoComplete="name"
-            />
-            <input
-              name="phone"
-              placeholder="Phone Number"
-              className={fieldClass}
-              autoComplete="tel"
-            />
-            <input
-              name="location"
-              placeholder="Property Location"
-              className={fieldClass}
-            />
-            <input
-              name="service"
-              placeholder="Service Required"
-              className={fieldClass}
-            />
-          </div>
-
-          <div className="mt-3 flex items-stretch gap-2.5">
-            <input
-              name="message"
-              placeholder="Write a short message for free Consultation"
-              className={`${fieldClass} flex-1`}
-            />
-            <button
-              type="submit"
-              aria-label="Submit enquiry"
-              className="inline-flex h-12 w-12 shrink-0 items-center justify-center bg-[#1C1C1C] text-white transition hover:bg-[#2A2A2A]"
-            >
-             <LuSend size={20}/>
-                {/* <path d="M3.4 20.6 21 12 3.4 3.4l-.1 6.7L14.5 12 3.3 13.9l.1 6.7z" />
-              </svg> */}
-            </button>
-          </div>
-        </form>
-
-        {/* Mobile highlight strip */}
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:hidden">
-          {highlights.map((item) => (
-            <div
-              key={item.title}
-              className=" border border-[#F6E0BE] bg-white px-4 py-3"
-            >
-              <p className="text-xs font-semibold text-ink">{item.title}</p>
-              <p className="mt-0.5 text-[11px] text-muted">{item.text}</p>
+            <div className="mt-4 grid min-w-0 gap-3 sm:grid-cols-2">
+              <input
+                name="fullName"
+                placeholder={t.hero.fullName}
+                className={fieldClass}
+                autoComplete="name"
+              />
+              <input
+                name="phone"
+                placeholder={t.hero.phone}
+                className={fieldClass}
+                autoComplete="tel"
+              />
+              <input
+                name="location"
+                placeholder={t.hero.location}
+                className={fieldClass}
+              />
+              <input
+                name="service"
+                placeholder={t.hero.service}
+                className={fieldClass}
+              />
             </div>
-          ))}
+
+            <div className="mt-3 flex min-w-0 items-stretch gap-2.5">
+              <input
+                name="message"
+                placeholder={t.hero.message}
+                className={`${fieldClass} min-w-0 flex-1`}
+              />
+              <button
+                type="submit"
+                aria-label={t.hero.submit}
+                className="inline-flex h-12 w-12 shrink-0 items-center justify-center bg-[#1C1C1C] text-white transition hover:bg-[#2A2A2A]"
+              >
+                <LuSend size={20} />
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:hidden">
+            {t.hero.highlights.map((item) => (
+              <div
+                key={item.title}
+                className="border border-[#F6E0BE] bg-white px-4 py-3"
+              >
+                <p className="text-xs font-semibold text-ink">{item.title}</p>
+                <p className="mt-0.5 text-[11px] text-muted">{item.text}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

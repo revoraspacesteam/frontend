@@ -15,9 +15,10 @@ export function r2Asset(path: string): string {
 }
 
 export const assets = {
-  logo: "Revora Logo.png",
+  logo: "logo.svg",
   workerTopdown: "worker-topdown.png",
   constructionCrane: "construction-crane.png",
   footerSkyline: "footer-skyline.png",
   notebookCover: "notebook-cover.png",
+  book: "bookpng.png",
 } as const;

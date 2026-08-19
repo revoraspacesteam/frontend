@@ -52,17 +52,17 @@ function DiamondCard({
   text: string;
 }) {
   return (
-    <div className="relative mx-auto aspect-square w-[min(100%,16.5rem)]">
+    <div className="relative mx-auto aspect-square w-[min(100%,16.5rem)] min-w-0">
       <div className="absolute inset-[12%] rotate-45 rounded-2xl border border-line bg-white shadow-[0_10px_28px_rgba(28,28,28,0.06)]" />
       <div className="absolute top-[8%] left-1/2 z-10 flex h-7 w-7 -translate-x-1/2 rotate-45 items-center justify-center rounded-md bg-charcoal">
         <span className="-rotate-45 text-xs font-semibold text-white">{n}</span>
       </div>
-      <div className="absolute inset-[18%] z-10 flex flex-col items-center justify-center px-3 text-center">
-        <span className="rounded-full bg-peach px-2 py-0.5 text-[9px] font-semibold text-ink">
+      <div className="absolute inset-[18%] z-10 flex min-w-0 flex-col items-center justify-center px-2 text-center sm:px-3">
+        <span className="max-w-full rounded-full bg-peach px-2 py-0.5 text-[9px] font-semibold text-ink">
           {tag}
         </span>
-        <h3 className="mt-2 text-sm font-semibold text-ink">{title}</h3>
-        <p className="mt-1.5 text-[10px] leading-snug text-muted sm:text-[11px]">
+        <h3 className="mt-2 max-w-full text-sm font-semibold text-ink">{title}</h3>
+        <p className="mt-1.5 max-w-full text-[10px] leading-snug text-muted sm:text-[11px]">
           {text}
         </p>
       </div>
@@ -72,12 +72,14 @@ function DiamondCard({
 
 export function RevoraDifference() {
   return (
-    <SectionShell tone="brick">
-      <Badge>The Revora Difference</Badge>
+    <SectionShell tone="brick" className="overflow-x-clip">
+      <Badge className="max-w-full">The Revora Difference</Badge>
 
-      {/* Desktop diamond V layout */}
-      <div className="relative mt-10 hidden lg:block">
-        <div className="pointer-events-none absolute inset-8 border border-line/60" style={{ transform: "rotate(45deg)" }} />
+      <div className="relative mt-10 hidden overflow-x-clip lg:block">
+        <div
+          className="pointer-events-none absolute inset-8 border border-line/60"
+          style={{ transform: "rotate(45deg)" }}
+        />
         <div className="grid grid-cols-3 gap-x-4 gap-y-2">
           {diamonds.slice(0, 3).map((d) => (
             <DiamondCard key={d.n} {...d} />
@@ -93,18 +95,17 @@ export function RevoraDifference() {
         </div>
       </div>
 
-      {/* Mobile/tablet stack */}
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:hidden">
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:hidden">
         {diamonds.map((d) => (
           <article
             key={d.n}
-            className="rounded-xl border border-line bg-white p-5"
+            className="min-w-0 rounded-xl border border-line bg-white p-5"
           >
-            <div className="mb-3 flex items-center gap-2">
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded bg-charcoal text-xs text-white">
+            <div className="mb-3 flex min-w-0 items-center gap-2">
+              <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded bg-charcoal text-xs text-white">
                 {d.n}
               </span>
-              <span className="rounded-full bg-peach px-2 py-0.5 text-[10px] font-semibold">
+              <span className="min-w-0 rounded-full bg-peach px-2 py-0.5 text-[10px] font-semibold">
                 {d.tag}
               </span>
             </div>
@@ -114,11 +115,11 @@ export function RevoraDifference() {
         ))}
       </div>
 
-      <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
+      <div className="mt-10 flex flex-col items-center justify-center gap-3 text-center sm:mt-12 sm:flex-row sm:gap-8">
         <p className="font-display text-xl text-ink sm:text-2xl">
           The Traditional Way
         </p>
-        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-charcoal text-xs font-semibold text-white">
+        <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-charcoal text-xs font-semibold text-white">
           vs
         </span>
         <p className="font-display text-xl text-ink sm:text-2xl">
