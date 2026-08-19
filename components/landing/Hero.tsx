@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { HighlightLabel } from "@/components/ui/HighlightLabel";
 import { LuSend } from "react-icons/lu";
@@ -62,6 +62,56 @@ function BrickWall({
 export function Hero() {
   const { t } = useLanguage();
   const [mode, setMode] = useState<"repair" | "project">("project");
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    formData.set("source", "hero-booking");
+    formData.set("agree", "true");
+    formData.set(
+      "propertyType",
+      mode === "repair" ? "Repairing & Maintenance" : "Start Your Project",
+    );
+    formData.set("details", String(formData.get("message") || ""));
+    formData.delete("message");
+
+    setSubmitStatus("submitting");
+    setSubmitMessage("");
+
+    try {
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ||
+        "http://localhost:5001";
+      const response = await fetch(`${apiUrl}/api/enquiries`, {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(result?.message || "Unable to submit your booking.");
+      }
+
+      form.reset();
+      setSubmitStatus("success");
+      setSubmitMessage(
+        result?.message || "Your booking request has been submitted.",
+      );
+    } catch (error) {
+      setSubmitStatus("error");
+      setSubmitMessage(
+        error instanceof Error
+          ? error.message
+          : "Unable to submit your booking.",
+      );
+    }
+  }
 
   return (
     <div className="relative isolate min-h-dvh overflow-x-hidden">
@@ -86,7 +136,7 @@ export function Hero() {
           </p>
           <form
             className="animate-fade-up delay-3 mx-auto mt-2 w-full max-w-[640px] p-5 shadow-[0_18px_50px_rgba(40,30,20,0.08)] sm:p-7"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubmit}
           >
             <div className="grid grid-cols-1 gap-2.5 bg-white p-2 px-4 font-body sm:grid-cols-2">
               <button
@@ -119,22 +169,27 @@ export function Hero() {
                 placeholder={t.hero.fullName}
                 className={fieldClass}
                 autoComplete="name"
+                required
               />
               <input
                 name="phone"
+                type="tel"
                 placeholder={t.hero.phone}
                 className={fieldClass}
                 autoComplete="tel"
+                required
               />
               <input
                 name="location"
                 placeholder={t.hero.location}
                 className={fieldClass}
+                required
               />
               <input
                 name="service"
                 placeholder={t.hero.service}
                 className={fieldClass}
+                required
               />
             </div>
 
@@ -147,11 +202,22 @@ export function Hero() {
               <button
                 type="submit"
                 aria-label={t.hero.submit}
+                disabled={submitStatus === "submitting"}
                 className="inline-flex h-12 w-12 shrink-0 items-center justify-center bg-[#1C1C1C] text-white transition hover:bg-[#2A2A2A]"
               >
                 <LuSend size={20} />
               </button>
             </div>
+            {submitMessage ? (
+              <p
+                className={`mt-3 text-sm ${
+                  submitStatus === "error" ? "text-red-600" : "text-green-700"
+                }`}
+                role="status"
+              >
+                {submitMessage}
+              </p>
+            ) : null}
           </form>
 
           <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:hidden">
